@@ -1,0 +1,19 @@
+*.swp
+*.swo
+*.bak
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.svn
+*.iml
+.classpath
+.project
+
+# Package Files #
+.svn
+.idea
+.settings
+target
+bin
