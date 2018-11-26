@@ -1,0 +1,1 @@
+java -jar jvm-monitor.jar 192.168.2.33:9008 10s D://
