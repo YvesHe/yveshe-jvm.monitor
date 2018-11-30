@@ -18,7 +18,7 @@
 **注意:** 
 参数`com.sun.management.jmxremote.port`的值为远程连接端口,只要保证端口不会被其他程序占用,不会引起冲突既可.
 
-以Tomcat中间件为例,在`catalina.sh/catalina.bat`中JAVA_OPTS选项中添加如下配置配置
+以Tomcat中间件为例,在`catalina.sh/catalina.bat`中JAVA_OPTS选项中添加如下配置:
 ```
 -Dcom.sun.management.jmxremote.port=9008 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
 ```
