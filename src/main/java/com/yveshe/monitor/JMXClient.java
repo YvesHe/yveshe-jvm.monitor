@@ -108,8 +108,8 @@ public class JMXClient {
             JVMInfo info = new JVMInfo();
             info.setGcTotalCount(gc.getCollectionCount());
             info.setGcTotalTime(MonitorUtil.round2(new Double(gc.getCollectionTime())));
-            double averageTime = new Double(gc.getCollectionCount() / new Double(gc.getCollectionTime()));
-            info.setGcAverageTime(averageTime);
+            double averageTime = new Double(gc.getCollectionCount()) / new Double(gc.getCollectionTime());
+            info.setGcAverageTime(MonitorUtil.round2(averageTime));
             return info;
         } catch (IOException e) {
             logger.error("error in collect gc info", e);

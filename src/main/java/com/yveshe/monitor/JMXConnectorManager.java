@@ -26,14 +26,14 @@ public class JMXConnectorManager {
     private JMXConnector jmxConnector;
 
     public JMXConnectorManager(String host, int port) throws MonitorException {
-        String url = "service:jmx:rmi///jndi/rmi://" + host + ":" + port + "/jmxrmi";
+        String url = "service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi";
         try {
             JMXServiceURL serviceURL = new JMXServiceURL(url);
             jmxConnector = JMXConnectorFactory.connect(serviceURL, null);
             logger.info("jmx connector connection successful");
         } catch (IOException e) {
             logger.error("error in new connector", e);
-            throw new MonitorException("error in new connector");
+            throw new MonitorException(e.getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ public class JMXConnectorManager {
             return jmxConnector.getMBeanServerConnection();
         } catch (IOException e) {
             logger.error("error in get MBeanServerConnection", e);
-            throw new MonitorException("error in get MBeanServerConnection");
+            throw new MonitorException(e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class JMXConnectorManager {
             jmxConnector = null;
         } catch (IOException e) {
             logger.error("error in closed connector", e);
-            throw new MonitorException("error in closed connector");
+            throw new MonitorException(e.getMessage());
         }
     }
 

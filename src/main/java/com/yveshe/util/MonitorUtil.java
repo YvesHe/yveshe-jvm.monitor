@@ -15,24 +15,26 @@ import org.apache.commons.lang3.StringUtils;
 public class MonitorUtil {
 
     public static boolean isIp(String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+
         boolean result = false;
-        if (StringUtils.isNotBlank(str)) {
-            String[] split = str.split(".");
-            if (split.length == 4) {
-                for (String ip : split) {
-                    if (!ip.matches("[0-9]*")) {
-                        break;
-                    }
-                    if (ip.length() > 1 && !ip.startsWith("0")) {
-                        break;
-                    }
-                    int parseInt = Integer.parseInt(ip);
-                    if (parseInt < 0 || parseInt > 255) {
-                        break;
-                    }
+        String[] split = str.split(java.util.regex.Pattern.quote("."));
+        if (split.length == 4) {
+            for (String ip : split) {
+                if (!ip.matches("[0-9]*")) {
+                    break;
                 }
-                result = true;
+                if (ip.length() > 1 && ip.startsWith("0")) {
+                    break;
+                }
+                int parseInt = Integer.parseInt(ip);
+                if (parseInt < 0 || parseInt > 255) {
+                    break;
+                }
             }
+            result = true;
         }
         return result;
     }

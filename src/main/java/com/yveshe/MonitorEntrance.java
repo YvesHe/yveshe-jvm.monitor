@@ -31,7 +31,10 @@ public class MonitorEntrance {
     public static void main(String[] args) {
 
         // check parameters
-        checkArguments(args);
+        boolean success = checkArguments(args);
+        if (!success) {
+            return;
+        }
 
         // covert time
         String timeStr = args[1].toLowerCase();
@@ -56,35 +59,35 @@ public class MonitorEntrance {
             CollectTimeTask task = new CollectTimeTask(client, new File(dir));
             new Timer().schedule(task, delay, period);
         } catch (MonitorException e) {
-            logger.info("error in main", e);
-            echo("error in main");
+            echoError("system run failed, please see the system log!");
+            logger.error("error in main", e);
         }
 
     }
 
-    private static void checkArguments(String[] args) {
+    private static boolean checkArguments(String[] args) {
         if (args == null || args.length < 3) {
             echoNoticeMessage();
-            return;
+            return false;
         }
 
         String ipPortStr = args[0].toLowerCase();
         String[] ipPort = ipPortStr.split(":");
         if (ipPort.length < 2) {
             echoNoticeMessage();
-            return;
+            return false;
         }
 
         // ip
         if (!ipPort[0].equals("localhost") && !MonitorUtil.isIp(ipPort[0])) {
             echoNoticeMessage();
-            return;
+            return false;
         }
 
         // port
-        if (MonitorUtil.isNumberic(ipPort[1])) {
+        if (!MonitorUtil.isNumberic(ipPort[1])) {
             echoNoticeMessage();
-            return;
+            return false;
         }
 
         // time
@@ -92,17 +95,17 @@ public class MonitorEntrance {
         char lastChar = time.charAt(time.length() - 1);
         if (lastChar != 's' && lastChar != 'm') {
             echoNoticeMessage();
-            return;
+            return false;
         }
         String timeNum = time.substring(0, time.length() - 1);
         if (!MonitorUtil.isNumberic(timeNum)) {
             echoNoticeMessage();
-            return;
+            return false;
         }
         if (lastChar != 's') {
             if (Integer.parseInt(timeNum) % 10 != 0) {
-                echo("when units are seconds, time must be an integer multiple of 10");
-                return;
+                echoError("when units are seconds, time must be an integer multiple of 10");
+                return false;
             }
         }
 
@@ -113,21 +116,22 @@ public class MonitorEntrance {
             file.mkdirs();
         }
         if (!file.exists()) {
-            echo("dir is not exist!");
-            return;
+            echoError("dir is not exist!");
+            return false;
         }
         if (!file.isDirectory()) {
-            echo("dir is not a directory");
-            return;
+            echoError("dir is not a directory");
+            return false;
         }
+        return true;
     }
 
     private static void echoNoticeMessage() {
-        echo("Please check the runtime parameters, please enter the following parameters as runing parameters: <ip>:<port> <time> <dir>");
-        echo("\tExample: localhost:8009 30s sample");
+        echoError("Please check the runtime parameters, please enter the following parameters as runing parameters: <ip>:<port> <time> <dir>");
+        echoError("\tExample: localhost:9008 30s sample");
     }
 
-    private static void echo(String msg) {
-        System.out.println(msg);
+    private static void echoError(String msg) {
+        System.err.println(msg);
     }
 }

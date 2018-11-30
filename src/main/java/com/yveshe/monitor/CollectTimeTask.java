@@ -55,11 +55,12 @@ public class CollectTimeTask extends TimerTask {
         outFile = new File(outDir, FILE_NAME);
         if (outFile.exists()) {
             outFile.delete();
-            outFile.createNewFile();
         }
+        outFile.createNewFile();
 
         BufferedWriter writer = Files.newBufferedWriter(outFile.toPath(), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
         writer.append(FIRST_LINE_DATA);
+        writer.newLine();
         writer.flush();
         writer.close();
     }
@@ -91,6 +92,7 @@ public class CollectTimeTask extends TimerTask {
         try {
             writer = Files.newBufferedWriter(outFile.toPath(), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
             writer.append(jvmLineData);
+            writer.newLine();
             writer.flush();
             writer.close();
         } finally {
